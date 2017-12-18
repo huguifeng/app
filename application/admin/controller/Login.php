@@ -14,4 +14,12 @@ class Login extends Controller
     {
         return $this->fetch();
     }
+    public function check()
+   	{
+   		$data = input("post.");
+   		if(!captcha_check($data['code'])){
+   			$this->error("验证码不正确");
+   		}
+   		
+    }
 }
