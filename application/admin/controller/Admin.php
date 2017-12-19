@@ -1,6 +1,8 @@
 <?php
 namespace app\admin\controller;
+use app\common\lib\Iauth;
 use think\Controller;
+
 class Admin extends Controller
 {
    public function add()
@@ -11,7 +13,7 @@ class Admin extends Controller
             if(!$valiate->check($data)){
                 $this->error($valiate->getError());
             }
-            $data['password'] = md5($data['password']."_strig");
+            $data['password'] = Iauth::setWord($data['password']);
             $data['status'] = 1;
             try{
               $id =  model("AdminUser")->add($data);

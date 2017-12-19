@@ -6,6 +6,7 @@
  * Time: 15:53
  */
 namespace app\admin\controller;
+use app\common\lib\Iauth;
 use think\Controller;
 
 class Login extends Controller
@@ -16,10 +17,30 @@ class Login extends Controller
     }
     public function check()
    	{
-   		$data = input("post.");
-   		if(!captcha_check($data['code'])){
-   			$this->error("验证码不正确");
-   		}
-   		
+   	    if(request()->isPost()){
+            $data = input("post.");
+            if(!captcha_check($data['code'])){
+                $this->error("验证码不正确");
+            }
+            try{
+                $user = model('AdminUser')->get(['username' => $data['username']]);
+                if(!$user || $user->status != 1){
+                    $this->error('用户名不存在');
+                }
+                if($user->password != Iauth::setWord($data['password'])){
+                    $this->error("密码不正确");
+                }
+                $udata = ['last_login_ip' => request()->ip(), 'last_login_time' => time()];
+                model("AdminUser")->save($udata, ['id' => $user->id]);
+            }catch (\Exception $e){
+                $this->error($e->getMessage());
+            }
+            session("adminuser", $user, 'app');
+            $this->success('登录成功');
+
+
+        }else{
+   	        $this->error("数句不合法");
+        }
     }
 }
