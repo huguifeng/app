@@ -9,8 +9,12 @@ namespace app\admin\controller;
 use app\common\lib\Iauth;
 use think\Controller;
 
-class Login extends Controller
+class Login extends Base
 {
+    public function _initialize()
+    {
+    }
+    
     public function index()
     {
         return $this->fetch();
@@ -44,5 +48,10 @@ class Login extends Controller
         }else{
    	        $this->error("数句不合法");
         }
+    }
+    public function logout()
+    {   
+        session(null, 'app');
+        $this->redirect('login/index');
     }
 }

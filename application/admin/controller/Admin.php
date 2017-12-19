@@ -1,5 +1,5 @@
-<?php
-namespace app\admin\controller;
+<?php 
+namespace app\admin\controller; 
 use app\common\lib\Iauth;
 use think\Controller;
 
