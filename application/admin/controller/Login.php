@@ -22,23 +22,25 @@ class Login extends Controller
             if(!captcha_check($data['code'])){
                 $this->error("验证码不正确");
             }
-            try{
+            try {
                 $user = model('AdminUser')->get(['username' => $data['username']]);
-                if(!$user || $user->status != 1){
+            } catch (\Exception $e){
+                    $this->error($e->getMessage());
+            }
+            if(!$user || $user->status != config('code.user_normol')){
                     $this->error('用户名不存在');
-                }
-                if($user->password != Iauth::setWord($data['password'])){
-                    $this->error("密码不正确");
-                }
-                $udata = ['last_login_ip' => request()->ip(), 'last_login_time' => time()];
+            }
+            if($user->password != Iauth::setWord($data['password'])){
+                $this->error("密码不正确");
+            }
+            $udata = ['last_login_ip' => request()->ip(), 'last_login_time' => time()];
+            try{
                 model("AdminUser")->save($udata, ['id' => $user->id]);
-            }catch (\Exception $e){
+            } catch (\Exception $e){
                 $this->error($e->getMessage());
             }
             session("adminuser", $user, 'app');
-            $this->success('登录成功');
-
-
+            $this->success('登录成功', 'index/index');
         }else{
    	        $this->error("数句不合法");
         }

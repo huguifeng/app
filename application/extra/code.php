@@ -6,5 +6,7 @@
  * Time: 15:06
  */
 return [
-    "user_normol"
-]
+    "user_normol" => 1,
+    "user_del"    => -1,
+    "user_wait"   => 0
+];
