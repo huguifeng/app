@@ -3,7 +3,7 @@ $(function() {
         swf           : swf,
         uploader      : upload_img_url,
         buttonText    :  '图片上传',
-        fileObjName   : 'files',
+        fileObjName   : 'img',
         fileTypeExts  : '*.gif; *.jpg; *.png',
         onUploadSuccess : function(file, data, response) {
            if(response){
