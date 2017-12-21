@@ -19,7 +19,7 @@ class Image extends Base
             ];
             die(json_encode($data));
         }
-        die(json_encode(['status'=>0, 'message' => '上传失败', 'url' =>'']));
+        die(json_encode(['status' => 0, 'message' => '上传失败', 'url' => '']));
     }
 
 }
