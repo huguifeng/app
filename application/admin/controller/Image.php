@@ -10,6 +10,7 @@ class Image extends Base
     {
         $info = Request::instance()->file("img");
         $info = $info->move('upload');
+
         if($info && $info->getPathname()){
             $data = [
                 "status" => 1,

@@ -10,5 +10,14 @@ use think\Model;
 use app\common\model\Base;
 class News extends Base
 {
-
+        public function getNews($data=[])
+        {
+            $data['status'] = ['neq', 1];
+            $order = ['id desc'];
+            $result = $this -> where($data)
+                  -> order($order)
+                  -> paginate();
+//            echo $this->getLastSql();
+            return $result;
+        }
 }

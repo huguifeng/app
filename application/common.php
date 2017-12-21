@@ -10,3 +10,22 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+function getPage($obj)
+{
+    if(!$obj){
+        return '';
+    }
+    $param = request()->param();
+    return "<div class='imooc-app'>".$obj->appends($param)->render()."</div>";
+}
+function getCat($id)
+{
+    if($id){
+       return config('cat.list')[$id];
+    }
+    return '';
+}
+function isYN($id)
+{
+    return !empty($id)?'是':'否';
+}

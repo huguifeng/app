@@ -6,7 +6,9 @@ class News extends Base
 {
     public function index()
     {
-        echo 123123;
+        $data = model('News')->getNews();
+
+        return $this -> fetch('', ['data' => $data]);
     }
     public function add()
     {
