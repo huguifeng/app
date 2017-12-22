@@ -4,11 +4,42 @@ use think\Controller;
 use app\admin\controller\Base;
 class News extends Base
 {
+
     public function index()
     {
-        $data = model('News')->getNews();
+        $data = input('param.');
+        $query = http_build_query($data);
+        $where = [];
+        if(!empty($data['catid'])){
+            $where['catid'] = $data['catid'];
+        }
+        if(!empty($data['start_time']) && !empty($data['end_time']) && $data['start_time'] < $data['end_time']){
+            $where['create_time'] = [
+                ['gt', strtotime($data['start_time'])], ['lt', strtotime($data['end_time'])]
+            ];
+        }
+        if(!empty($data['title'])) {
+            $where['title'] = [
+                'like', '%' . $data['title'] . '%'
+            ];
+        }
+        $cat = config('cat.list');
+        $this->getPageSize($data);
+        $resut = model('News') -> getNewsByContion($where, $this->from, $this->size);
+        $count = model('News') -> getCount($where);
+        $pageTotal = ceil($count/$this->size);
+        return $this->fetch('', [
+            'query' => $query,
+            'pageTotal' => $pageTotal,
+            'cat' => $cat,
+            'data' => $resut,
+            'curr' => $this->page,
+            'start_time' => !empty($data['start_time'])?$data['start_time']:'',
+            'end_time' => !empty($data['end_time'])?$data['end_time']:'',
+            'title' => !empty($data['title'])?$data['title']:'',
+            'catid' => !empty($data['catid'])?$data['catid']:'',
+            ]);
 
-        return $this -> fetch('', ['data' => $data]);
     }
     public function add()
     {

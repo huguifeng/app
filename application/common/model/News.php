@@ -20,4 +20,21 @@ class News extends Base
 //            echo $this->getLastSql();
             return $result;
         }
+        public function getNewsByContion($contion, $from, $size)
+        {
+            $contion['status'] = ['neq', 1];
+            $order = ['id desc'];
+            $result = $this->where($contion)
+                          ->order($order)
+                          ->limit($from, $size)
+                          ->select();
+            return $result;
+        }
+        public function getCount($condition)
+        {
+            $condition['status'] = ['neq', 1];
+            $count = $this->where($condition)
+                          ->count();
+            return $count;
+        }
 }
