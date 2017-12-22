@@ -28,3 +28,26 @@ function selecttime(flag){
             WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})}
     }
  }
+
+function app_del(obj){
+    // 获取模板当中的url地址
+    url = $(obj).attr('del_url');
+    layer.confirm('确认要删除吗？',function(index){
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            success: function(data){
+                if(data.code == 1) {
+                    // 执行跳转
+                    self.location=data.data.jump_url;
+                }else if(data.code == 0) {
+                    layer.msg(data.msg, {icon:2, time:2000});
+                }
+            },
+            error:function(data) {
+                console.log(data.msg);
+            },
+        });
+    });
+}

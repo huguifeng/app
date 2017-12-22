@@ -6,6 +6,7 @@ class Base extends Controller
     public $page = '';
     public $size = 5;
     public $from = '';
+    public $model = '';
     public function _initialize()
     {	
     	$action = $this->isLogin();
@@ -27,5 +28,26 @@ class Base extends Controller
         $this->page = !empty($data['page'])?$data['page']:1;
         $this->size = !empty($data['size'])?$data['size']:config('paginate.list_rows');
         $this->from = (($this->page)-1)*$this->size;
+    }
+    public function del()
+    {
+        $id = input('param.')['id'];
+        $model = request() -> controller();
+        $model = $this->model?$this->model:$model;
+
+        if(!$id){
+            return $this->result('', 0, '数据不合法');
+        }
+        try{
+            $res = model($model)->save(['status' => 1],['id'=>$id]);
+        }catch (\Exception $e){
+
+            return $this->result('', 0, '删除失败');
+        }
+        if(!$res){
+            return $this->result('', 0, '删除失败');
+        }
+        return $this->result(['jump_url' => $_SERVER['HTTP_REFERER']], 1, '删除成功');
+
     }
 }
