@@ -34,12 +34,11 @@ class Base extends Controller
         $id = input('param.')['id'];
         $model = request() -> controller();
         $model = $this->model?$this->model:$model;
-
         if(!$id){
             return $this->result('', 0, '数据不合法');
         }
         try{
-            $res = model($model)->save(['status' => 1],['id'=>$id]);
+            $res = model($model)->save(['status' => -1],['id'=>$id]);
         }catch (\Exception $e){
 
             return $this->result('', 0, '删除失败');
@@ -48,6 +47,28 @@ class Base extends Controller
             return $this->result('', 0, '删除失败');
         }
         return $this->result(['jump_url' => $_SERVER['HTTP_REFERER']], 1, '删除成功');
+
+    }
+    public function stutus()
+    {
+        $id = input('param.')['id'];
+        $status = input('param.')['status'];
+        $model = request() -> controller();
+        $model = $this->model?$this->model:$model;
+
+        if(!$id){
+            return $this->result('', 0, '数据不合法');
+        }
+        try{
+            $res = model($model)->save(['status' => $status],['id'=>$id]);
+        }catch (\Exception $e){
+
+            return $this->result('', 0, '修改失败');
+        }
+        if(!$res){
+            return $this->result('', 0, '修改失败');
+        }
+        return $this->result(['jump_url' => $_SERVER['HTTP_REFERER']], 1, '修改成功');
 
     }
 }

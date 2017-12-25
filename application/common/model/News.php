@@ -12,7 +12,7 @@ class News extends Base
 {
         public function getNews($data=[])
         {
-            $data['status'] = ['neq', 1];
+            $data['status'] = ['neq', -1];
             $order = ['id desc'];
             $result = $this -> where($data)
                   -> order($order)
@@ -22,7 +22,7 @@ class News extends Base
         }
         public function getNewsByContion($contion, $from, $size)
         {
-            $contion['status'] = ['neq', 1];
+            $contion['status'] = ['neq', -1];
             $order = ['id desc'];
             $result = $this->where($contion)
                           ->order($order)
@@ -32,7 +32,7 @@ class News extends Base
         }
         public function getCount($condition)
         {
-            $condition['status'] = ['neq', 1];
+            $condition['status'] = ['neq', -1];
             $count = $this->where($condition)
                           ->count();
             return $count;

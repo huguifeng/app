@@ -29,3 +29,23 @@ function isYN($id)
 {
     return !empty($id)?'是':'否';
 }
+function status($id, $status)
+{
+    $controller = request()->controller();
+    $str = $status == 1?0:1;
+    $url = url($controller.'/stutus',['id'=>$id, 'status'=>$str]);
+    if($str == 1){
+        return "<a title='修改状态' onclick='app_sta(this)' javascript:; url='".$url."'><span>待审</span></a>";
+    }else{
+        return "<a title='修改状态' onclick='app_sta(this)' javascript:; url='".$url."'><span>正常</span></a>";
+    }
+}
+function show($code, $message, $data=[], $httpcode = 200)
+{
+    $result = [
+        'code' => $code,
+        'message' => $message,
+        'data' => $data
+    ];
+    return json($result, $httpcode);
+}

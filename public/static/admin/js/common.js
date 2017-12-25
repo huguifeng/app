@@ -51,3 +51,25 @@ function app_del(obj){
         });
     });
 }
+function app_sta(obj){
+    // 获取模板当中的url地址
+    url = $(obj).attr('url');
+    layer.confirm('确认要修改吗？',function(index){
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            success: function(data){
+                if(data.code == 1) {
+                    // 执行跳转
+                    self.location=data.data.jump_url;
+                }else if(data.code == 0) {
+                    layer.msg(data.msg, {icon:2, time:2000});
+                }
+            },
+            error:function(data) {
+                console.log(data.msg);
+            },
+        });
+    });
+}

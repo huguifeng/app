@@ -6,5 +6,6 @@
  * Time: 14:20
  */
 return [
-    'salt' => "_sing_"
+    'salt' => "_sing_",
+    'aeskey' => 'gsgg45747ss22345'
 ];
