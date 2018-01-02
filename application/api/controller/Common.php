@@ -11,27 +11,32 @@ use app\common\lib\Iauth;
 use think\Controller;
 class Common extends Controller
 {
+    public $header;
     public function _initialize()
     {
-//        $this->checkAuth();
-        $this -> test();
-
+        $this->checkAuth();
     }
     public function checkAuth()
     {
         $data = request()->header();
-        halt($data);
+        if(empty($data['sign'])){
+           die(json_encode([0, 'sign不存在', []]));
+
+        }
+        if(empty($data['app']) || !in_array($data['app'], config('app.allow'))){
+            die(json_encode([0, 'app不合法', []]));
+        }
+        if(empty($data['model'])){
+            die(json_encode([0, 'model不存在', []]));
+        }
+        if(!Iauth::checkSign($data)){
+            die(json_encode([0, 'sign不正确', []]));
+        }
+        $this->header = $data;
+
     }
-    public function test()
-    {
-        $data = [
-            'username' => '12345dg',
-            'password' => 1
-        ];
-//        $string = Iauth::setSign($data);
-        $string =(new Aes())->decrypt("CgcmWOAW6f0bqO3HP8DZNpl/WA2EGR7P4RkLJRT6kFk=");
-        halt($string);
-    }
+
+
 
 
 }

@@ -20,4 +20,17 @@ class Iauth
        $sign =  (new Aes())->encrypt($string);
        return $sign;
     }
+    public static function checkSign($data)
+    {
+        $string = (new Aes())->decrypt($data['sign']);
+        parse_str($string, $arr);
+        if(!is_array($arr)){
+            return false;
+        }
+
+        if($arr['device'] != $data['device'] || $arr['did'] != $data['did'] || empty($arr['device']) || empty($arr['did'])){
+            return false;
+        }
+            return true;
+    }
 }

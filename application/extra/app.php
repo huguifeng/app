@@ -7,5 +7,7 @@
  */
 return [
     'salt' => "_sing_",
-    'aeskey' => 'gsgg45747ss22345'
+    'aeskey' => 'gsgg45747ss22345',
+    'allow' => ['ios', 'android']
+
 ];
